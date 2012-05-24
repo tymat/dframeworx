@@ -1,0 +1,10 @@
+-- TEKNIK DESTEK YAZILIMI VERI TABANI OLUÞTURMA DOSYASI --
+-- To create database execute
+-- sqlite3 friends.db ".read friends.txt"
+
+CREATE TABLE FRIENDS (
+  FRIEND_ID           INTEGER PRIMARY KEY,
+  NAME                TEXT,
+  SURNAME             TEXT
+);
+

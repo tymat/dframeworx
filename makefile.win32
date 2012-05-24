@@ -1,0 +1,144 @@
+IMPDIR= framework\c
+GUIDIR= framework\implementation\gui
+IMGDIR= framework\implementation\image
+COLDIR= framework\implementation\collections
+DBDIR= framework\implementation\database
+MATHDIR=framework\implementation\math
+FWDIR= framework
+DFLAGS= -c -O
+
+IMPOBJFILES= xml_imp.obj jpeg_imp.obj
+
+OBJFILES= position.obj size.obj rectangle.obj \
+          ievent.obj ieventarray.obj \
+          eventarray.obj eventdispatcher.obj systemevent.obj event.obj eventargs.obj \
+          menu.obj window.obj \
+          graphics.obj exceptions.obj  form.obj \
+          statedwindow.obj automatedform.obj \
+          controls.obj toolbox.obj dockmanager.obj \
+          treeview.obj grid.obj application.obj datacontrols.obj \
+          image.obj bmp.obj jpeg.obj \
+          array.obj list.obj graph.obj queue.obj sqlite3.obj dllutils.obj \
+          serialstream.obj xml.obj \
+
+MATHOBJFILES= matrix.obj linear.obj matrixerrors.obj
+          
+IMPLIB= imports.lib
+IMPLIBS= $(IMPDIR)\lib\sqlite.lib
+IMPDESTPATH= framework\c\lib
+
+LIB= framework.lib
+LIBS= ..\dm\lib\gdi32.lib ..\dm\lib\comdlg32.lib ..\dm\lib\comctl32.lib $(IMPDESTPATH)\$(IMPLIB)
+DESTPATH= framework\lib
+
+MATHLIB = math.lib
+
+.PHONY: install imports lib clean
+
+install: imports lib
+
+imports: $(IMPLIB)
+
+$(IMPLIB): $(IMPOBJFILES)
+	lib -n -c $(IMPDESTPATH)\$(IMPLIB) $(IMPOBJFILES) $(IMPLIBS)
+
+lib: $(LIB) $(MATHLIB)
+
+$(LIB): $(OBJFILES)
+	lib -n -c $(DESTPATH)\$(LIB) $(OBJFILES) $(LIBS)
+
+$(MATHLIB) : $(MATHOBJFILES)
+	lib -n -c $(DESTPATH)\$(MATHLIB) $(MATHOBJFILES)
+
+clean:
+	del *.obj
+	del *.lib
+
+# DLL imports
+jpeg_imp.obj: $(IMPDIR)\image\jpeg_imp.d
+	dmd $(DFLAGS) $<
+xml_imp.obj: $(IMPDIR)\xml_imp.d
+	dmd $(DFLAGS) $<
+# gui library
+position.obj: $(GUIDIR)\position.d
+	dmd $(DFLAGS) $<
+size.obj: $(GUIDIR)\size.d
+	dmd $(DFLAGS) $<
+rectangle.obj: $(GUIDIR)\rectangle.d $(GUIDIR)\position.d $(GUIDIR)\size.d
+	dmd $(DFLAGS) $<
+ieventarray.obj: $(GUIDIR)\ieventarray.d
+	dmd $(DFLAGS) $<
+ievent.obj: $(GUIDIR)\ievent.d
+	dmd $(DFLAGS) $<
+eventarray.obj: $(GUIDIR)\eventarray.d
+	dmd $(DFLAGS) $<
+eventdispatcher.obj: $(GUIDIR)\eventdispatcher.d
+	dmd $(DFLAGS) $<
+systemevent.obj: $(GUIDIR)\systemevent.d
+	dmd $(DFLAGS) $<
+event.obj: $(GUIDIR)\event.d
+	dmd $(DFLAGS) $<
+eventargs.obj: $(GUIDIR)\eventargs.d
+	dmd $(DFLAGS) $<
+menu.obj: $(GUIDIR)\menu.d
+	dmd $(DFLAGS) $<
+window.obj: $(GUIDIR)\window.d
+	dmd $(DFLAGS) $<
+statedwindow.obj: $(GUIDIR)\statedwindow.d
+	dmd $(DFLAGS) $<
+automatedform.obj: $(GUIDIR)\automatedform.d
+	dmd $(DFLAGS) $<
+graphics.obj: $(GUIDIR)\graphics.d
+	dmd $(DFLAGS) $<
+exceptions.obj: $(GUIDIR)\exceptions.d
+	dmd $(DFLAGS) $<
+form.obj: $(GUIDIR)\form.d
+	dmd $(DFLAGS) $<
+controls.obj: $(GUIDIR)\controls.d
+	dmd $(DFLAGS) $<
+toolbox.obj: $(GUIDIR)\toolbox.d
+	dmd $(DFLAGS) $<
+dockmanager.obj: $(GUIDIR)\dockmanager.d
+	dmd $(DFLAGS) $<
+glview.obj: $(GUIDIR)\glview.d
+	dmd $(DFLAGS) $<
+treeview.obj: $(GUIDIR)\treeview.d
+	dmd $(DFLAGS) $<
+grid.obj: $(GUIDIR)\grid.d
+	dmd $(DFLAGS) $<
+datacontrols.obj: $(GUIDIR)\datacontrols.d
+	dmd $(DFLAGS) $<
+application.obj: $(GUIDIR)\application.d
+	dmd $(DFLAGS) $<
+# image
+image.obj: $(IMGDIR)\image.d
+	dmd $(DFLAGS) $<
+bmp.obj: $(IMGDIR)\bmp.d
+	dmd $(DFLAGS) $<
+jpeg.obj: $(IMGDIR)\jpeg.d
+	dmd $(DFLAGS) $<
+# templates
+array.obj: $(COLDIR)\array.d
+	dmd $(DFLAGS) $<
+list.obj: $(COLDIR)\list.d
+	dmd $(DFLAGS) $<
+graph.obj: $(COLDIR)\graph.d
+	dmd $(DFLAGS) $<
+queue.obj: $(COLDIR)\queue.d
+	dmd $(DFLAGS) $<
+sqlite3.obj: $(DBDIR)\sqlite3.d
+	dmd $(DFLAGS) $<
+# misc
+dllutils.obj: $(FWDIR)\dllutils.d
+	dmd $(DFLAGS) $<
+serialstream.obj: $(FWDIR)\serialstream.d
+	dmd $(DFLAGS) $<
+xml.obj: $(FWDIR)\xml.d
+	dmd $(DFLAGS) $<
+# math library
+matrix.obj: $(MATHDIR)\matrix.d
+	dmd $(DFLAGS) $<
+linear.obj: $(MATHDIR)\linear.d
+	dmd $(DFLAGS) $<
+matrixerrors.obj: $(MATHDIR)\matrixerrors.d
+	dmd $(DFLAGS) $<
